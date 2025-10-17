@@ -102,8 +102,11 @@ def process_data():
                 df = df.filter(df.closed == True) # Ne garder que les bougies fermées/finalisées
                 df.show(truncate=False)  # Affichage des données
                 if not df.rdd.isEmpty(): # Vérifier si le DataFrame n'est pas vide avant d'écrire
+                    df_filtered = df.select("symbol", "open", "high", "low", "close", "volume", "timestamp") # filter colonnes à sauvegarder
+                    pandas_df = df_filtered.toPandas() #convertir en dataframe en pandas
+                    pandas_df['timestamp'] = pandas_df['timestamp'].dt.strftime('%Y-%m-%d %H:%M:%S') # formatage datetime pour json
                     with open(output_file, 'a') as f:
-                        df.toPandas().to_json(output_file, orient='records', lines=True) # Enregistrement dans un fichier json
+                        pandas_df.to_json(output_file, orient='records', lines=True) # Enregistrement dans un fichier json
                 shared_data.clear()  # Vider la liste après traitement
 
 
