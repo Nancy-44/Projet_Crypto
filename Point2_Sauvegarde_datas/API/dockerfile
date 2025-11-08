@@ -1,0 +1,23 @@
+# Dockerfile
+FROM python:3.11-slim
+
+# Variables d'environnement
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Installer pip et dépendances système pour psycopg2
+RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier requirements si tu en as
+COPY requirements.txt /app/
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Copier tout le projet
+COPY . /app
+
+# Commande par défaut
+CMD ["python", "load.py"]
