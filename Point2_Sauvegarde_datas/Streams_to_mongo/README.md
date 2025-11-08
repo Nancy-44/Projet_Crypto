@@ -1,66 +1,51 @@
-# ProjectTemplate
+# Lancer le script
 
-## Explanations and Instructions
+## Pour obtenir des données en streaming
 
-This repository contains the files needed to initialize a project for your [DataScientest](https://datascientest.com/) training.
+    # docker compose up 
+    #pip install pymongo python-binance 
+    # install spark
+    python ../1_collecte_datas/1-streams.py
 
-It contains mainly the present README.md file and an application template [Streamlit](https://streamlit.io/).
+## Pour obtenir des données historiques
 
-**README**
+    # docker compose up 
+    #pip install pymongo python-binance 
+    python klines2mongo.py
 
-The README.md file is a central element of any git repository. It allows you to present your project, its objectives, and to explain how to install and launch the project, or even how to contribute to it.
+# Voir les données
 
-You will have to modify different sections of this README.md to include the necessary informations.
+Les données sont collectées avec une collection par symbol.
 
-- Complete the sections (`## Presentation and Installation` `## Streamlit App`) following the instructions in these sections.
-- Delete this section (`## Explanations and Instructions`)
-
-**Streamlit Application**
-
-A [Streamlit] application template (https://streamlit.io/) is available in the [streamlit_app](streamlit_app) folder. You can use this template to start with your project.
-
-## Presentation and Installation
-
-This repository contains the code for our project **CRYPTOBOT**, developed during our [Data Scientist training](https://datascientest.com/en/data-scientist-course) at [DataScientest](https://datascientest.com/).
+    docker exec -it my_mongo bash
+    mongosh -u user -p password
+    use binance_klines
+    show collections # une collection par symbol
+    db.BTCUSDT.findOne()
 
 
-### Source document
-[Google Doc](https://docs.google.com/document/d/1kD6haSp3reTUA8sMsd0x9z6FpJ7rfcZydrmZJOi40Ak/edit?tab=t.0)
-
-### Rapport
-[Rapport Google Doc](https://docs.google.com/document/d/17Ac_xDNrtbrUkXxCpqzD2FOfHVSbl3pYiARYsLQqX0U/edit?usp=sharing)
-
-### Presentation
-[Presentation](https://docs.google.com/presentation/d/1H5-MovAMEX6wPQzWxFyq7Xm6sqe9KCvi9rVl7dXg2G0)
-
-The goal of this project is to develop a cryptobot, a trading bot capable of trading cryptos based on machine learning interpretation of data.
-
-This project was developed by the following team :
-
-- Thomas Saliou ([GitHub](https://github.com/7omate) / [LinkedIn](http://linkedin.com/))
-- Florent Rigal ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
-- Philippe Kirstetter-Fender ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
-- Nancy Frémont ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
-
-You can browse and run the [notebooks](./notebooks). 
-
-You will need to install the dependencies (in a dedicated environment) :
-
+## exemple de données
 ```
-pip install -r requirements.txt
+{
+  _id: ObjectId('68f0f0fbb58dfa2bbac90d8d'),
+  open_time: ISODate('2025-09-25T18:00:00.000Z'),
+  open: 108833.63,
+  high: 109801.78,
+  low: 108631.51,
+  close: 109760.2,
+  volume: 1427.42291,
+  close_time: ISODate('2025-09-25T18:59:59.999Z'),
+  symbol: 'BTCUSDT'
+}
 ```
 
-## Streamlit App
+# Améliorations
 
-**Add explanations on how to use the app.**
+On voudrait ecouter les données en streaming et a partir de ces données consolider la base de données pour obtenir les données a la minute, l'heure, 24h. Cela ne semble pas trivial.
 
-To run the app (be careful with the paths of the files in the app):
-
-```shell
-conda create --name my-awesome-streamlit python=3.9
-conda activate my-awesome-streamlit
-pip install -r requirements.txt
-streamlit run app.py
+# Visualization
+Un outil existe qui s'appelle Mongodb _Charts_ mais il ne semble plus possible a l'heure actuelle de le déployer localement:
 ```
-
-The app should then be available at [localhost:8501](http://localhost:8501).
+Docker Image Format v1 and Docker Image manifest version 2, schema 1 support has been removed. Suggest the author of quay.io/mongodb/charts:latest to upgrade the image to the OCI Format or Docker Image manifest v2, schema 2. More information at https://docs.docker.com/go/deprecated-image-specs/
+```
+Voir le script dans notebooks, ViewMongo.ipynb
