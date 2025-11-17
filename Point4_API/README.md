@@ -4,6 +4,7 @@ API_PASSWORD=secret123
 
 # Démarche pour se connecter à l'API avec un docker compose
 # 1. Lancer tous les services avec docker compose
+> docker compose build --no-cache
 > docker compose up -d # lance en arrière plan  
 > docker compose ps # vérifier que les containers sont sains et up  
 
@@ -36,6 +37,16 @@ curl -u <user>:<password> "http://localhost:8000/latest?symbol=BTCUSDT"
 curl -u admin:admin123 -X POST "http://localhost:8000/predict" \
 -H "Content-Type: application/json" \
 -d '{"symbol": "BNBUSDT", "interval": "15m"}'
+## E. Drift (MongoDB, ML et PostgreSQL)
+curl -X POST "http://localhost:8000/drift" \
+  -H "Content-Type: application/json" \
+  -u admin:secret123 \
+  -d '{
+        "symbol": "BTCUSDT",
+        "interval": "15m",
+        "window": 60,
+        "metric": "ks"
+      }'
 
 # 5. Si Message d'erreur, vérifier les logs
 > docker compose logs -f api  
