@@ -1,0 +1,94 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: etape_4-postgres-1
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      retries: 5
+
+  etl:
+    build:
+      context: ./etl  # dossier contenant API_hist_to_postgres.py et requirements.txt
+    container_name: etl
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["python3", "API_hist_to_postgres.py"]
+    networks:
+      - backend
+
+  mongo:
+    image: mongo:7
+    container_name: etape_4-mongo-1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --host localhost -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --eval \"db.adminCommand('ping')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ml:
+    build:
+      context: .
+      dockerfile: ./ml/Dockerfile
+    container_name: etape_4-ml-1
+    networks:
+      - backend
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  streaming:
+    build: ./streaming
+    container_name: etape_4-streaming-1
+    networks:
+      - backend
+    depends_on:
+      - postgres
+      - mongo
+    env_file:
+      - .env
+
+  api:
+    build: ./api
+    container_name: etape_4-api-1
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on:
+      - ml
+      - streaming
+      - postgres
+      - mongo
+    volumes:
+      - ./ml/models:/ml/models
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
+  mongodata:
+
+networks:
+  backend:
