@@ -14,6 +14,9 @@ mongosh -u <user> -p <password> - authenticationDatabase admin # pour lancer she
 > db.klines.find().limit(5)  
 
 si mongoDB vide, laisser tourner service streaming via docker compose  
+> docker compose build streaming  
+> docker compose up -d streaming   
+> docker compose run --rm streaming python stream.py  
 
 # 3. Vérifier données dans PostgreSQL
 docker compose exec postgres bash # pour se connecter au container postgreSQL  
