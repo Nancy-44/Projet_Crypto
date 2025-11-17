@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 import pandas as pd
 import joblib
 import os
 from .db import get_postgres_conn, get_mongo_collection
 from .auth import authenticate
+from scipy.stats import ks_2samp
 
 app = FastAPI(title="Crypto Prediction API")
 
@@ -16,9 +17,16 @@ MODELS = {
     "SOLUSDT": "/ml/models/SOLUSDT.pkl",
 }
 
+# Models Pydantec
 class PredictRequest(BaseModel):
     symbol: str
-    interval: str = "15m" # 15m (par défaut), 1h, 4h, 1d
+    interval: str = "15m" # 15m (par défaut), possibilité de changer avec 1h, 4h, 1d
+
+class DriftRequest(BaseModel):
+    symbol: str
+    interval: str = "15m"
+    window: int = 60
+    metric: str = "ks"   # pour le moment seul KS-test est implémenté
 
 # --- endpoint HEALTH ---
 @app.get("/health")
@@ -104,7 +112,7 @@ def compute_features(df):
 # --- PREDICT ---
 @app.post("/predict")
 def predict(req: PredictRequest, auth: bool = Depends(authenticate)):
-    """Calcule une prédiction Buy ou sell avec une probabilité."""
+    """Calcule une prédiction Achat(Buy) ou vente(sell) avec une probabilité."""
     # Vérifie que le modèle existe
     if req.symbol not in MODELS:
         return {"error": "model not available"}
@@ -151,4 +159,69 @@ def predict(req: PredictRequest, auth: bool = Depends(authenticate)):
         "prob_buy": float(proba[1]),
         "prob_sell": float(proba[0]),
         "timestamp": df_feat["close_time"].iloc[-1].isoformat()
+    }
+
+# ---- Endpoint DRIFT - KS-test ------
+@app.post("/drift")
+def check_drift(req: DriftRequest, auth: bool = Depends(authenticate)):
+
+    if req.symbol not in MODELS:
+        raise HTTPException(status_code=400, detail="model not available")
+
+    # ---------- 1. Données historiques (PostgreSQL)
+    conn = get_postgres_conn()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT k.open, k.high, k.low, k.close, k.volume
+        FROM klines k
+        JOIN symbol s ON k.symbol_id = s.symbol_id
+        WHERE s.symbol = %s
+        ORDER BY k.open_time DESC
+        LIMIT 1000
+    """, (req.symbol,))
+    hist_rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    if not hist_rows:
+        raise HTTPException(status_code=404, detail="No historical data available")
+
+    df_hist = pd.DataFrame(hist_rows, columns=["open","high","low","close","volume"])
+
+    # ---------- 2. Données récentes (MongoDB)
+    collection = get_mongo_collection()
+    df_recent = pd.DataFrame(list(
+        collection.find({"symbol": req.symbol, "closed": True}).sort("close_time", -1).limit(req.window)
+    ))
+
+    if df_recent.empty:
+        raise HTTPException(status_code=404, detail="No recent data available")
+
+    df_recent = df_recent[["open","high","low","close","volume"]]
+
+    # ---------- 3. Features
+    df_hist_feat = compute_features(df_hist)
+    df_recent_feat = compute_features(df_recent)
+
+    if df_hist_feat.empty or df_recent_feat.empty:
+        raise HTTPException(status_code=400, detail="Not enough data to compute features for drift")
+
+    # ---------- 4. Calcul KS-test
+    drift_results = {}
+    for col in df_hist_feat.columns:
+        stat, p_value = ks_2samp(df_hist_feat[col], df_recent_feat[col])
+        drift_results[col] = {
+            "ks_stat": float(stat),
+            "p_value": float(p_value)
+        }
+
+    # Détection si un drift est présent (p < 0.05)
+    drift_detected = any(v["p_value"] < 0.05 for v in drift_results.values())
+
+    return {
+        "symbol": req.symbol,
+        "drift_detected": drift_detected,
+        "metric": "ks",
+        "window": req.window,
+        "results": drift_results
     }
