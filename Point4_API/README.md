@@ -15,7 +15,7 @@ mongosh -u <user> -p <password> - authenticationDatabase admin # pour lancer she
 
 si mongoDB vide, laisser tourner service streaming via docker compose  
 
-# 3. Vérifier données dnas PostgreSQL
+# 3. Vérifier données dans PostgreSQL
 docker compose exec postgres bash # pour se connecter au container postgreSQL  
 psql -U <user> -d <db> # lancer psql  
 > \dt # pour lister les tables  
