@@ -22,14 +22,14 @@ class PredictRequest(BaseModel):
 
 # --- endpoint HEALTH ---
 @app.get("/health")
-"""Vérifie que l'API est fonctionnelle."""
 def health():
+    """Vérifie que l'API est fonctionnelle."""
     return {"message": "L'API est fonctionnelle."}
 
 # --- endpoint HISTORICAL ---
 @app.get("/historical")
-"""Récupère les dernières bougies stockées dans PostgreSQL."""
 def get_historical(symbol: str, limit: int = 10, auth: bool = Depends(authenticate)):
+    """Récupère les dernières bougies stockées dans PostgreSQL."""
     conn = get_postgres_conn()
     cursor = conn.cursor()
     cursor.execute("""
@@ -65,8 +65,8 @@ def get_historical(symbol: str, limit: int = 10, auth: bool = Depends(authentica
 
 # --- endpoint LATEST ---
 @app.get("/latest")
-"""Récupère la dernière bougie (MongoDB)."""
 def get_latest(symbol: str, auth: bool = Depends(authenticate)):
+    """Récupère la dernière bougie (MongoDB)."""
     collection = get_mongo_collection()
     # pour récupérer le dernier document du symbole trié par index du plus récent.
     doc = collection.find_one({"symbol": symbol}, sort=[("_id", -1)]) 
@@ -103,8 +103,8 @@ def compute_features(df):
 
 # --- PREDICT ---
 @app.post("/predict")
-"""Calcule une prédiction Buy ou sell avec une probabilité."""
 def predict(req: PredictRequest, auth: bool = Depends(authenticate)):
+    """Calcule une prédiction Buy ou sell avec une probabilité."""
     # Vérifie que le modèle existe
     if req.symbol not in MODELS:
         return {"error": "model not available"}
