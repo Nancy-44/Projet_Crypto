@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+pymongo
+psycopg2-binary
+bcrypt
+passlib
+joblib
+pandas
+xgboost
