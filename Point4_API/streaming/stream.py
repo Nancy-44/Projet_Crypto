@@ -40,7 +40,7 @@ NUM_CANDLES = 60  # nombre de bougies à insérer
 # Insertion des bougies
 # ----------------------------
 for symbol in SYMBOLS:
-    now = datetime()
+    now = datetime.now()
     for interval_name, interval_min in INTERVALS.items():
         for i in range(NUM_CANDLES):
             close_time = now - timedelta(minutes=i*interval_min)
