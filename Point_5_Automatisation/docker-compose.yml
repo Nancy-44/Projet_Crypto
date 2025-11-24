@@ -176,7 +176,6 @@ services:
     build:
       context: .
       dockerfile: airflow/Dockerfile
-    image: custom-airflow:latest
     container_name: airflow-webserver
     env_file: .env
     ports:
@@ -201,7 +200,6 @@ services:
     build:
       context: .
       dockerfile: airflow/Dockerfile
-    image: custom-airflow:latest
     container_name: airflow-scheduler
     env_file: .env
     networks:
