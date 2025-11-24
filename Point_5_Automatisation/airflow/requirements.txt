@@ -1,0 +1,8 @@
+pandas
+requests
+psycopg2-binary
+pymongo
+websocket-client
+joblib
+scikit-learn
+pendulum==2.1.2
