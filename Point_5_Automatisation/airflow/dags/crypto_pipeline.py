@@ -6,7 +6,7 @@ import os, requests, subprocess
 from dotenv import load_dotenv
 
 
-load_dotenv("/opt/airflow/.env")  # chemin vers ton .env monté
+load_dotenv("/opt/airflow/.env")  # charge fichier .env
 
 API_URL = "http://api:8000/health"
 
@@ -36,7 +36,7 @@ def run_streaming():
 with DAG(
     dag_id="crypto_pipeline",
     description="Pipeline complet (ETL + Streaming + API health)",
-    #schedule_interval="*/10 * * * *", # toutes les 10 minutes
+    schedule_interval="*/10 * * * *", # toutes les 10 minutes
     start_date=datetime(2024, 1, 1),
     catchup=False,
     default_args={
