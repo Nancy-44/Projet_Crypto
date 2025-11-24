@@ -3,6 +3,7 @@ networks:
   backend:
 
 volumes:
+  grafana_storage:
   crypto_pgdata:
   airflow_pgdata:
   airflow_logs:
@@ -255,9 +256,4 @@ services:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     restart: unless-stopped
 
-volumes:
-  grafana-storage:
-  crypto_pgdata:
-  airflow_pgdata:
-  mongo_data:
   
