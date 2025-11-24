@@ -1,3 +1,20 @@
+
+# Airflow  
+## Construire l'image d'Airflow  
+> cd Projet_Crypto/Etape_5/airflow  
+> docker build -t crypto_airflow:latest .  
+## Lancer Airflow  
+> docker-compose up --build -d  
+
+## Nettoyage avant de relancer  
+> docker-compose down -v  
+> docker system prune -a --volumes -f  
+
+## Consulter les logs en cas d'erreur  
+> docker-compose logs -f api  
+> docker-compose logs -f airflow-webserver  
+> docker-compose logs -f airflow-scheduler  
+
 # Gitlab  
 ## Installer Gitlab runner  
 > curl -L http://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash  
@@ -20,18 +37,11 @@
 > git branch -M main # se placer sur la branche main  
 > git push -u origin main # renseigner username GitLab et password GitLab
 
-# Airflow  
-## Construire l'image d'Airflow  
-> cd Projet_Crypto/Etape_5/airflow  
-> docker build -t crypto_airflow:latest .  
-## Lancer Airflow  
-> docker-compose up --build -d  
-
-## Nettoyage avant de relancer  
-> docker-compose down -v  
-> docker system prune -a --volumes -f  
-
-## Consulter les logs en cas d'erreur  
-> docker-compose logs -f api  
-> docker-compose logs -f airflow-webserver  
-> docker-compose logs -f airflow-scheduler  
+# Prometheus & Grafana  
+> Prometheus : http://<IP_VM>:9000/ # Vérifier metrics cAdvisor (Prometheus => Status => Target_health si cAdvisor up (ok)  
+> Grafana : http://<IP_VM>:3000 (login : admin, password : admin) # Importer le datasource.yml pour le dashboard  
+Visualisation des metrics suivantes :  
+CPU Usage  
+Memory Usage  
+Network Receive  
+Network Transmit  
