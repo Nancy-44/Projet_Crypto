@@ -52,7 +52,7 @@ build_ml:
     - main
 
 # -------- PUSH --------
-# Ici, on “valide” les pushes ou on pourrait les retagger pour un autre registry
+
 push_images:
   stage: push
   script:
