@@ -19,7 +19,7 @@ MODELS = {
 }
 
 
-class Symbol(str, Enum):
+class Symbol(str, Enum): # ajout d'une liste déroulante des symboles sur api
     btcusdt = "BTCUSDT"
     ethusdt = "ETHUSDT"
     bnbusdt = "BNBUSDT"
