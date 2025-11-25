@@ -44,4 +44,8 @@ Visualisation des metrics suivantes :
 CPU Usage  
 Memory Usage  
 Network Receive  
-Network Transmit  
+Network Transmit
+
+# Streamlit  
+> Accès via http://localhost:8501/  
+Il récupère les données JSON de l'API (/historical, /predict et /latest) et affiche un dashboard utilisateur.
