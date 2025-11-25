@@ -60,14 +60,9 @@ Network Transmit
 
 # Streamlit  
 > Accès via http://localhost:8501/  
-This repository contains the code for our project **CRYPTOBOT**, developed during our [Data Scientist training](https://datascientest.com/en/data-scientist-course) at [DataScientest](https://datascientest.com/).  
+ 
 
 
-### Source document  
-[Google Doc](https://docs.google.com/document/d/1kD6haSp3reTUA8sMsd0x9z6FpJ7rfcZydrmZJOi40Ak/edit?tab=t.0)  
-
-
-Ce projet a été mené dans le cadre de la formation Data Engineer réalisée chez Datascientest.  
 
 ### Groupe Projet :  
 Nancy Frémont  ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))  
@@ -77,3 +72,9 @@ Thomas Saliou  ([GitHub](https://github.com/7omate) / [LinkedIn](http://linkedin
 
 ### Encadrant du projet :  
 Rémy Dallavale  
+
+
+### Source document  
+[Google Doc](https://docs.google.com/document/d/1kD6haSp3reTUA8sMsd0x9z6FpJ7rfcZydrmZJOi40Ak/edit?tab=t.0)  
+
+Ce projet a été mené dans le cadre de la formation Data Engineer réalisée chez Datascientest.  
