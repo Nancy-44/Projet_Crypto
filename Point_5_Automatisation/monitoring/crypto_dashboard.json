@@ -1,0 +1,69 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "title": "CPU Usage (Node Exporter)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode='idle'}[1m])) * 100)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 6}
+    },
+    {
+      "title": "Memory Usage (Node Exporter)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 6}
+    },
+    {
+      "title": "API Requests Total",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "api_requests_total",
+          "legendFormat": "{{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 6, "w": 12, "h": 6}
+    },
+    {
+      "title": "API Request Latency (95th percentile)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(api_request_latency_seconds_bucket[1m])) by (le))",
+          "legendFormat": "{{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 6, "w": 12, "h": 6}
+    },
+    {
+      "title": "Postgres Connections",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "pg_stat_activity_count{datname='crypto_db'}",
+          "legendFormat": "{{state}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 12, "w": 24, "h": 6}
+    }
+  ],
+  "title": "Crypto Stack Monitoring",
+  "timezone": "browser"
+}
