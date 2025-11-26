@@ -77,4 +77,10 @@ Rémy Dallavale
 ### Source document  
 [Google Doc](https://docs.google.com/document/d/1kD6haSp3reTUA8sMsd0x9z6FpJ7rfcZydrmZJOi40Ak/edit?tab=t.0)  
 
+### Rapport  
+[Rapport Google Doc](https://docs.google.com/document/d/17Ac_xDNrtbrUkXxCpqzD2FOfHVSbl3pYiARYsLQqX0U/edit?usp=sharing)  
+
+### Presentation  
+[Presentation](https://docs.google.com/presentation/d/1H5-MovAMEX6wPQzWxFyq7Xm6sqe9KCvi9rVl7dXg2G0)  
+
 Ce projet a été mené dans le cadre de la formation Data Engineer réalisée chez Datascientest.  
