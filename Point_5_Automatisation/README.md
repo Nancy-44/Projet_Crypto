@@ -39,12 +39,13 @@
 
 # Prometheus & Grafana  
 > Prometheus : http://<IP_VM>:9000/ # Vérifier metrics cAdvisor (Prometheus => Status => Target_health si cAdvisor up (ok)  
-> Grafana : http://<IP_VM>:3000 (login : admin, password : admin) # Importer le datasource.yml pour le dashboard  
+> Grafana : http://<IP_VM>:3000 (login : admin, password : admin) # Importer le fichier .json pour le dashboard  
 Visualisation des metrics suivantes :  
 CPU Usage  
 Memory Usage  
-Network Receive  
-Network Transmit
+API Requests Total  
+API Requests Latency  
+PostgreSQL Connections  
 
 # Streamlit  
 > Accès via http://localhost:8501/  
