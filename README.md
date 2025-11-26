@@ -6,7 +6,7 @@ Le but principal de ce projet est de créer un bot de trading basé sur un modè
 Nous avons créé une arborescence comprenant les services suivants : airflow, api, machine learning (ml), streaming (récupération des données via Websocket binance), etl (pipeline de récupération des données historiques via API Binance), monitoring (via Prometheus et Grafana) et streamlit (accès à dashboard utilisateur).
 Notre projet est entièrement automatisé et monitoré garantissant sa reproductibilité, sa scalabilité et sa fiabilité.  
 
-L'accès à l'API, à Prometheus&Grafana et à Streamlit est détaillée ci-dessous. Il suffit pour cela de lancer le docker-compose général pour pouvoir accéder à chacun des services.  
+L'accès à l'API, à Prometheus & Grafana, à Airflow, à GitLab et à Streamlit est détaillée ci-dessous. Il suffit pour cela de lancer le docker-compose général pour pouvoir accéder à chacun des services.  
 
 # Airflow  
 ## Construire l'image d'Airflow  
