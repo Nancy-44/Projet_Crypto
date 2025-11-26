@@ -71,7 +71,7 @@ Florent Rigal  ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/)
 Thomas Saliou  ([GitHub](https://github.com/7omate) / [LinkedIn](http://linkedin.com/))  
 
 ### Encadrant du projet :  
-Rémy Dallavale  
+Rémy Dallavalle  
 
 
 ### Source document  
