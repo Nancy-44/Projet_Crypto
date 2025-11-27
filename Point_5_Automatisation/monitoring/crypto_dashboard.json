@@ -62,7 +62,20 @@
         }
       ],
       "gridPos": {"x": 0, "y": 12, "w": 24, "h": 6}
+    }, 
+    {
+      "title": "Active Containers",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "count(container_start_time_seconds{image!=\"\"})",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 18, "w": 24, "h": 6}
     }
+
   ],
   "title": "Crypto Stack Monitoring",
   "timezone": "browser"
