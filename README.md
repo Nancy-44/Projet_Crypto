@@ -48,8 +48,8 @@ Endpoints principaux : /predict, /historical, /latest.
 ## Configurer GitLab runner pour utiliser Docker  
 > sudo usermod -aG docker gitlab-runner  
 > sudo systemctl restart gitlab-runner  
-## Vérifier sous GitLab que runner est "online" (vert)  
-## Ajouter fichiers .gitlab-ci.yml et docker-compose.yml à la racine du 'Projet_Crypto/Etape_5'  
+Vérifier sous GitLab que runner est "online" (vert)  
+Vérifier que les fichiers .gitlab-ci.yml et docker-compose.yml sont à la racine du 'Projet_Crypto/Etape_5'   
 ## Initialiser dépôt Git local   
 > cd ~/Projet_Crypto/Etape_5  
 > git init # initialiser Git  
