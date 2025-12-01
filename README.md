@@ -19,7 +19,7 @@ Cela démarre tous les services nécessaires (API, Airflow, Streamlit, monitorin
 # 1. API   
 > url: http://localhost:8000/docs  
 > Identifiant : admin  
-> Mot de passe : admin123      
+> Mot de passe : secret123      
 Endpoints principaux : /predict, /historical, /latest.  
 
 # 2. Airflow  
