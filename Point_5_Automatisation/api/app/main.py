@@ -8,7 +8,7 @@ from .db import get_postgres_conn, get_mongo_collection
 from .auth import authenticate
 from enum import Enum
 
-app = FastAPI(title="Crypto Prediction API")
+app = FastAPI(title="Crypto Prediction API" )
 
 # Chargement des modèles ML
 MODELS = {
@@ -27,7 +27,7 @@ class Symbol(str, Enum): # ajout d'une liste déroulante des symboles sur api
 
 class PredictRequest(BaseModel):
     symbol: Symbol
-    interval: str = "15m" # 15m (par défaut), 1h, 4h, 1d
+    interval: str = "1m" # 1m (par défaut), 15m, 1h, 4h, 1d
 
 # --- endpoint HEALTH ---
 @app.get("/health")
@@ -78,7 +78,7 @@ def get_latest(symbol: Symbol, auth: bool = Depends(authenticate)):
     """Récupère la dernière bougie (MongoDB)."""
     collection = get_mongo_collection()
     # pour récupérer le dernier document du symbole trié par index du plus récent.
-    doc = collection.find_one({"symbol": symbol}, sort=[("_id", -1)]) 
+    doc = collection.find_one({"symbol": symbol.lower()}, sort=[("_id", -1)]) 
     if not doc:
         raise HTTPException(status_code=404, detail="No live data found")
     doc["_id"] = str(doc["_id"])
@@ -124,7 +124,7 @@ def predict(req: PredictRequest, auth: bool = Depends(authenticate)):
     # Récupérer les 60 dernières bougies fermées depuis MongoDB
     collection = get_mongo_collection()
     df = pd.DataFrame(list(
-        collection.find({"symbol": req.symbol, "closed": True}).sort("close_time", -1).limit(60)
+        collection.find({"symbol": req.symbol.lower(), "closed": True}).sort("close_time", -1).limit(60)
     ))
     if df.empty:
         raise HTTPException(status_code=404, detail="No data available for prediction")
