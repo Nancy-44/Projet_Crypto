@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="Crypto Prediction Dashboard", layout="wide")
 st.title(" Crypto Prediction Dashboard")
 st.subheader("Prédiction + Dernière valeur temps réel + Historique (tableau)")
-DEFAULT_INTERVAL = "15 min"   # valeur affichée
+DEFAULT_INTERVAL = "1 min"   # valeur affichée
 
 # --- Choix du symbole ---
 symbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT"]
